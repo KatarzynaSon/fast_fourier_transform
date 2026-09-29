@@ -34,3 +34,10 @@ The main trade-off is that input lengths must be powers of two. The convolution 
 - `fft` and `ifft` raise `ValueError` if the input length is not a power of two.
 - `convolution` and `polynomial_multiply` raise `ValueError` on empty inputs.
 - All functions return `complex` values, even when the inputs are real, because the frequency-domain representation is generally complex.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
